@@ -6,6 +6,7 @@ from Mongo.order_access import OrderAccess
 from mocks.order import Order, publishOrderToQueue
 from mocks.listing_items_status_change import Status,listingsItemStatusChange, publishListingItemsStatusChange
 from mocks.listing_items_mfn_quantity_change import listingItemsMfnQuantityChange, FulfillmentChannelCode, publishListingItemsMfnQuantityChange
+from mocks.fulfillment_order_status import FulfillmentOrderStatus, generateWithOrderIdAndStatus, publishFulfillmentOrderStatusNotification
 from flask import request
 import os
 
@@ -189,6 +190,30 @@ def publishListingQuantityChangeEvent():
             "message": "Error publishing event"
         }, 402
         
+@app.post("/publishorderstatuschangeevent")
+def publishOrderStatusChangeEvent():
+    try:
+        body = request.get_json()
+        
+        orderId = body["OrderId"]
+        status = body["Status"]
+        status = FulfillmentOrderStatus[status]
+        
+        event = generateWithOrderIdAndStatus(orderId, status)
+        
+        publishFulfillmentOrderStatusNotification(event)
+        
+        return {
+            "message": "Event published successfully"
+        }
+        
+    except Exception as e:
+        print(e)
+        return {
+            "message": "Error publishing event"
+        }, 402
+        
+
 def run():
     load_dotenv()
     CORS(app)

@@ -87,7 +87,7 @@ class fulfillmentOrderStatusNotification:
         
 def generateRandomFulfillmentOrderStatusNotification() -> fulfillmentOrderStatusNotification:
     #pick a random event type
-    eventType = random.choice(list(EventType))
+    eventType = EventType.Order
     
     #generate a random date and time
     statusUpdatedDateTime = generateRandomDateTime()
@@ -100,6 +100,28 @@ def generateRandomFulfillmentOrderStatusNotification() -> fulfillmentOrderStatus
     
     #pick a random fulfillment order status
     filFillmentOrderStatus = random.choice(list(FulfillmentOrderStatus))
+    
+    #generate a random fulfillment shipment
+    fulfillmentShipment = generateRandomFulfillmentShipment()
+    
+    return fulfillmentOrderStatusNotification(eventType, sellerId, statusUpdatedDateTime, sellerFulfillmentOrderId, filFillmentOrderStatus, fulfillmentShipment)
+
+
+def generateWithOrderIdAndStatus(orderId: str, status: FulfillmentOrderStatus) -> fulfillmentOrderStatusNotification:
+    #pick a random event type
+    eventType = EventType.Order
+    
+    #generate a random date and time
+    statusUpdatedDateTime = generateRandomDateTime()
+    
+    #generate a random seller id
+    sellerId = "hackathon"
+    
+    #generate a random seller fulfillment order id
+    sellerFulfillmentOrderId = orderId
+    
+    #pick a random fulfillment order status
+    filFillmentOrderStatus = status
     
     #generate a random fulfillment shipment
     fulfillmentShipment = generateRandomFulfillmentShipment()

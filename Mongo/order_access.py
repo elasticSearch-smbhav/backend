@@ -67,3 +67,6 @@ class OrderAccess:
     def getPrices(self, listOrders: List[Order]) -> List[float]:
         return [self.getPrice(order.orderId) for order in listOrders]
     
+    def updateOrderStatus(self, orderId: str, status: str):
+        self.orderCollection.update_one({"OrderId": orderId}, {"$set": {"FulfillmentOrderStatus": status}})
+    

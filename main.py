@@ -1,4 +1,4 @@
-from mocks.fulfillment_order_status import generateRandomFulfillmentOrderStatusNotification, publishFulfillmentOrderStatusNotification
+from mocks.fulfillment_order_status import generateRandomFulfillmentOrderStatusNotification, publishFulfillmentOrderStatusNotification, generateWithOrderIdAndStatus, FulfillmentOrderStatus, EventType, fulfillmentOrderStatusNotification
 from mocks.listing_items_mfn_quantity_change import generateRandomListingItemsMfnQuantityChange, publishListingItemsMfnQuantityChange, listingItemsMfnQuantityChange, FulfillmentChannelCode
 from mocks.listing_items_status_change import generateRandomListingItemsStatusChange, publishListingItemsStatusChange, Status, listingsItemStatusChange
 from mocks.order import generateRandomOrder, publishOrderToQueue
@@ -24,7 +24,9 @@ def main():
     
     # l = ListingAccess()
     # # l.setQuantityForAllListings()
-    # print(l.getListing("c91d6409f3862e68f6a4a71c3e0d6ec9").__dict__())
+    # # print(l.getListing("c91d6409f3862e68f6a4a71c3e0d6ec9").__dict__())
+    # obj = generateWithOrderIdAndStatus("1234", FulfillmentOrderStatus.Cancelled)
+    # publishFulfillmentOrderStatusNotification(obj)
     run()
     
 if __name__ == "__main__":
