@@ -2,7 +2,7 @@ from mocks.listing_items_status_change import Status
 
 class Listing:
     def __init__(self, uniqueId, date, timeStamp, siteName, category, productTitle, productDescription,
-                 brand, packSizeOrQuantity, mrp, price, offers, comboOffers, stockAvailability, imageUrls, purchases, status=Status.DISCOVERABLE):
+                 brand, packSizeOrQuantity, mrp, price, offers, comboOffers, stockAvailability, imageUrls, purchases, quantity, status=Status.DISCOVERABLE):
         self.uniqueId = uniqueId
         self.date = date
         self.timeStamp = timeStamp
@@ -20,6 +20,8 @@ class Listing:
         self.imageUrls = imageUrls
         self.purchases = purchases
         self.status = status
+        self.quantity = quantity
+        
 
     def __dict__(self):
         """
@@ -42,7 +44,8 @@ class Listing:
             "Stock Availibility": self.stockAvailability,
             "Image Urls": self.imageUrls,
             "Purchases": self.purchases,
-            "Status": self.status.name
+            "Status": self.status.name,
+            "Quantity": self.quantity
         }
 
     def __str__(self):
@@ -60,7 +63,8 @@ class Listing:
                 f"Offers: {self.offers}\n" \
                 f"Product Description: {self.productDescription}\n" \
                 f"Unique ID: {self.uniqueId}\n" \
-                f"Status: {self.status.name}"
+                f"Status: {self.status.name}\n" \
+                f"Quantity: {self.quantity}"
 
     @staticmethod
     def __from_dict__(data):
@@ -73,6 +77,12 @@ class Listing:
             status = Status[data.get('Status')]
         else:
             status = Status.DISCOVERABLE
+            
+        if data.get('Quantity') is None:
+            quantity = 0
+        
+        else:
+            quantity = data.get('Quantity')
             
         return Listing(
             uniqueId=data.get('Unique ID'),
@@ -91,5 +101,6 @@ class Listing:
             stockAvailability=data.get('Stock Availibility'),
             imageUrls=data.get('Image Urls'),
             purchases=data.get('Purchases'),
-            status=status
+            status=status,
+            quantity=quantity
         )

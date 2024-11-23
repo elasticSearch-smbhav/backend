@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from mocks.listing import Listing
+import random
 from typing import List
 import os
 
@@ -46,6 +47,17 @@ class ListingAccess:
     
     def updateListingStatus(self, listingId: str, status: str):
         self.listingCollection.update_one({"Unique ID": listingId}, {"$set": {"Status": status}})
+        
+        
+    def updateQuantity(self, listingId: str, quantity: int):
+        currentQuantity = self.listingCollection.find_one({"Unique ID": listingId})["Quantity"]
+        
+        newQuantity = currentQuantity - quantity
+        
+        if newQuantity < 0:
+            newQuantity = 0
+            
+        self.listingCollection.update_one({"Unique ID": listingId}, {"$set": {"Quantity": newQuantity}})
     
     
     
