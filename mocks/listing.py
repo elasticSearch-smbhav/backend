@@ -1,4 +1,5 @@
 from mocks.listing_items_status_change import Status
+import math
 
 class Listing:
     def __init__(self, uniqueId, date, timeStamp, siteName, category, productTitle, productDescription,
@@ -27,27 +28,40 @@ class Listing:
         """
         Returns the dictionary representation of the object.
         """
-        self.comboOffers = ""
-        self.packSizeOrQuantity = ""
+        
+        #loop over fields and if any NaN values are
+        #found, replace them with None
+        
+        
+        #check for NaN in all the fields, cannot use __dict__
+        
+                
+        def replace_nan(value):
+            """ Helper function to replace NaN with None """
+            if isinstance(value, (float, int)) and math.isnan(value):
+                return ""
+            return value
+
+        # Return the object as a dictionary with NaN values replaced by None
         return {
-            "Unique ID": self.uniqueId,
-            "Date": self.date,
-            "Time Stamp": self.timeStamp,
-            "Site Name": self.siteName,
-            "Category": self.category,
-            "Product Title": self.productTitle,
-            "Product Description": self.productDescription,
-            "Brand": self.brand,
-            "Pack Size Or Quantity": self.packSizeOrQuantity,
-            "Mrp": self.mrp,
-            "Price": self.price,
-            "Offers": self.offers,
-            "Combo Offers": self.comboOffers,
-            "Stock Availibility": self.stockAvailability,
-            "Image Urls": self.imageUrls,
-            "Purchases": self.purchases,
-            "Status": self.status.name,
-            "Quantity": self.quantity
+            "Unique ID": replace_nan(self.uniqueId),
+            "Date": replace_nan(self.date),
+            "Time Stamp": replace_nan(self.timeStamp),
+            "Site Name": replace_nan(self.siteName),
+            "Category": replace_nan(self.category),
+            "Product Title": replace_nan(self.productTitle),
+            "Product Description": replace_nan(self.productDescription),
+            "Brand": replace_nan(self.brand),
+            "Pack Size Or Quantity": replace_nan(self.packSizeOrQuantity),
+            "Mrp": replace_nan(self.mrp),
+            "Price": replace_nan(self.price),
+            "Offers": replace_nan(self.offers),
+            "Combo Offers": replace_nan(self.comboOffers),
+            "Stock Availability": replace_nan(self.stockAvailability),
+            "Image Urls": replace_nan(self.imageUrls),
+            "Purchases": replace_nan(self.purchases),
+            "Status": replace_nan(self.status.name),  # Assuming status is not NaN, but handling for completeness
+            "Quantity": replace_nan(self.quantity)
         }
 
     def __str__(self):
