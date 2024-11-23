@@ -8,14 +8,23 @@ import os
 load_dotenv()
 
 class ListingAccess:
+    _instance = None
     mongoUri = os.getenv("MONGO_URI")
     mongoDbName = os.getenv("MONGO_DB_NAME")
     listingCollectionName = os.getenv("LISTING_COLLECTION_NAME")
     
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            # If no instance exists, create one
+            cls._instance = super().__new__(cls)
+        return cls._instance
+    
     def __init__(self):
-        self.client = MongoClient(ListingAccess.mongoUri)
-        self.db = self.client[ListingAccess.mongoDbName]
-        self.listingCollection = self.db[ListingAccess.listingCollectionName]
+        if not hasattr(self, 'initialized'):  # Check if already initialized
+            self.client = MongoClient(ListingAccess.mongoUri)
+            self.db = self.client[ListingAccess.mongoDbName]
+            self.listingCollection = self.db[ListingAccess.listingCollectionName]
+            self.initialized = True
         
         
     def insertListing(self, listing: Listing):
@@ -58,6 +67,11 @@ class ListingAccess:
             newQuantity = 0
             
         self.listingCollection.update_one({"Unique ID": listingId}, {"$set": {"Quantity": newQuantity}})
+        
+    def getPaginated(self, pageNumber: int, pageSize: int) -> List[Listing]:
+        listings = self.listingCollection.find({}).skip(pageNumber * pageSize).limit(pageSize)
+        
+        return [Listing.__from_dict__(listing) for listing in listings]
     
     
     

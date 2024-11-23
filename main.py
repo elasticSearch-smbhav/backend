@@ -5,6 +5,7 @@ from mocks.order import generateRandomOrder, publishOrderToQueue
 from Mongo.order_access import OrderAccess
 from Mongo.listing_access import ListingAccess
 from AWS.kafka import createKafkaTopic
+from App.api import run
 def main():
     # listingItemsMfnQuantityChangeObj = listingItemsMfnQuantityChange("sellerId", FulfillmentChannelCode.MFN, "c91d6409f3862e68f6a4a71c3e0d6ec9", 25)
     # publishListingItemsMfnQuantityChange(listingItemsMfnQuantityChangeObj)
@@ -21,9 +22,10 @@ def main():
     # print(obj.getAllOrders()[0].__dict__())
     # publishOrderToQueue(order)
     
-    l = ListingAccess()
-    # l.setQuantityForAllListings()
-    print(l.getListing("c91d6409f3862e68f6a4a71c3e0d6ec9").__dict__())
+    # l = ListingAccess()
+    # # l.setQuantityForAllListings()
+    # print(l.getListing("c91d6409f3862e68f6a4a71c3e0d6ec9").__dict__())
+    run()
     
 if __name__ == "__main__":
     main()
