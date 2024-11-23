@@ -1,6 +1,6 @@
 from langchain.agents import initialize_agent, Tool
 from tools.together_llm import TogetherLLM
-from backend.inventory import check_inventory
+from inventory import check_inventory
 from tools.delivery import delivery_time
 from tools.sla_check import sla_compliance
 

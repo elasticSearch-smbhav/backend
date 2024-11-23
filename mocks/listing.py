@@ -27,6 +27,7 @@ class Listing:
         """
         Returns the dictionary representation of the object.
         """
+        self.comboOffers = ""
         return {
             "Unique ID": self.uniqueId,
             "Date": self.date,
