@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 import os
 from routes.auth_routes import auth_blueprint
@@ -16,9 +15,6 @@ app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 app.config['JWT_COOKIE_SECURE'] = True
 CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
-
-# Initialize JWT Manager
-jwt = JWTManager(app)
 
 # Register Blueprints
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
