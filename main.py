@@ -1,6 +1,6 @@
 from mocks.fulfillment_order_status import generateRandomFulfillmentOrderStatusNotification, publishFulfillmentOrderStatusNotification
 from mocks.listing_items_mfn_quantity_change import generateRandomListingItemsMfnQuantityChange, publishListingItemsMfnQuantityChange
-from mocks.listing_items_status_change import generateRandomListingItemsStatusChange, publishListingItemsStatusChange
+from mocks.listing_items_status_change import generateRandomListingItemsStatusChange, publishListingItemsStatusChange, Status, listingsItemStatusChange
 from mocks.order import generateRandomOrder, publishOrderToQueue
 from Mongo.order_access import OrderAccess
 from Mongo.listing_access import ListingAccess
@@ -12,7 +12,7 @@ def main():
     # fulfillmentOrderStatusNotification = generateRandomFulfillmentOrderStatusNotification()
     # publishFulfillmentOrderStatusNotification(fulfillmentOrderStatusNotification)
     
-    # listingItemsStatusChange = generateRandomListingItemsStatusChange()
+    # listingItemsStatusChange = listingsItemStatusChange("sellerId", "c91d6409f3862e68f6a4a71c3e0d6ec9", Status.BUYABLE)
     # publishListingItemsStatusChange(listingItemsStatusChange)
     
     # order = generateRandomOrder()
@@ -23,7 +23,7 @@ def main():
     
     l = ListingAccess()
     
-    print(l.getAllListings()[0])
+    print(l.getListing("c91d6409f3862e68f6a4a71c3e0d6ec9").__dict__())
     
 if __name__ == "__main__":
     main()

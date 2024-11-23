@@ -25,17 +25,17 @@ class ListingAccess:
     
     
     def getListing(self, listingId: str) -> Listing:
-        listing = self.listingCollection.find_one({"uniqueId":
+        listing = self.listingCollection.find_one({"Unique ID":
                                                    listingId})
         
         return Listing.__from_dict__(listing)
     
     
     def updateListing(self, listing: Listing):
-        self.listingCollection.replace_one({"uniqueId": listing.uniqueId}, listing.__dict__())
+        self.listingCollection.replace_one({"Unique ID": listing.uniqueId}, listing.__dict__())
         
     def getListingsAfterDate(self, date: str) -> List[Listing]:
-        listings = self.listingCollection.find({"date": {"$gt": date}})
+        listings = self.listingCollection.find({"Date": {"$gt": date}})
         
         return [Listing.__from_dict__(listing) for listing in listings]
     
@@ -43,4 +43,9 @@ class ListingAccess:
         listings = self.listingCollection.find({})
         print(listings)
         return [Listing.__from_dict__(listing) for listing in listings]
+    
+    def updateListingStatus(self, listingId: str, status: str):
+        self.listingCollection.update_one({"Unique ID": listingId}, {"$set": {"Status": status}})
+    
+    
     

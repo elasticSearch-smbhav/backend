@@ -1,0 +1,45 @@
+import os
+from pymongo import MongoClient
+from models.listing import Listing
+from typing import List
+
+class ListingAccess:
+    mongoUri = os.getenv("MONGO_URI")
+    mongoDbName = os.getenv("MONGO_DB_NAME")
+    listingCollectionName = os.getenv("LISTING_COLLECTION_NAME")
+    
+    def __init__(self):
+        self.client = MongoClient(ListingAccess.mongoUri)
+        self.db = self.client[ListingAccess.mongoDbName]
+        self.listingCollection = self.db[ListingAccess.listingCollectionName]
+        
+        
+    def insertListing(self, listing: Listing):
+        self.listingCollection.insert_one(listing.__dict__())
+        
+    def close(self):
+        self.client.close()
+    
+    
+    def getListing(self, listingId: str) -> Listing:
+        listing = self.listingCollection.find_one({"Unique ID":
+                                                   listingId})
+        
+        return Listing.__from_dict__(listing)
+    
+    
+    def updateListing(self, listing: Listing):
+        self.listingCollection.replace_one({"Unique ID": listing.uniqueId}, listing.__dict__())
+        
+    def getListingsAfterDate(self, date: str) -> List[Listing]:
+        listings = self.listingCollection.find({"Date": {"$gt": date}})
+        
+        return [Listing.__from_dict__(listing) for listing in listings]
+    
+    def getAllListings(self) -> List[Listing]:
+        listings = self.listingCollection.find({})
+        print(listings)
+        return [Listing.__from_dict__(listing) for listing in listings]
+    
+    def updateListingStatus(self, listingId: str, status: str):
+        self.listingCollection.update_one({"Unique ID": listingId}, {"$set": {"Status": status}})

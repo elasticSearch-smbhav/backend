@@ -1,7 +1,8 @@
+from mocks.listing_items_status_change import Status
 
 class Listing:
     def __init__(self, uniqueId, date, timeStamp, siteName, category, productTitle, productDescription,
-                 brand, packSizeOrQuantity, mrp, price, offers, comboOffers, stockAvailability, imageUrls, purchases):
+                 brand, packSizeOrQuantity, mrp, price, offers, comboOffers, stockAvailability, imageUrls, purchases, status=Status.DISCOVERABLE):
         self.uniqueId = uniqueId
         self.date = date
         self.timeStamp = timeStamp
@@ -18,6 +19,7 @@ class Listing:
         self.stockAvailability = stockAvailability
         self.imageUrls = imageUrls
         self.purchases = purchases
+        self.status = status
 
     def __dict__(self):
         """
@@ -39,21 +41,26 @@ class Listing:
             "Combo Offers": self.comboOffers,
             "Stock Availibility": self.stockAvailability,
             "Image Urls": self.imageUrls,
-            "Purchases": self.purchases
+            "Purchases": self.purchases,
+            "Status": self.status.name
         }
 
     def __str__(self):
         """
         Returns a string representation of the object.
+        Include unique id and status as well
         """
+        
         return f"Listing: {self.productTitle} ({self.category})\n" \
-               f"Brand: {self.brand}\n" \
-               f"Price: {self.price} (MRP: {self.mrp})\n" \
-               f"Stock Availability: {self.stockAvailability}\n" \
-               f"Date: {self.date} | Time: {self.timeStamp}\n" \
-               f"Purchases: {self.purchases}\n" \
-               f"Offers: {self.offers}\n" \
-               f"Product Description: {self.productDescription}"
+                f"Brand: {self.brand}\n" \
+                f"Price: {self.price} (MRP: {self.mrp})\n" \
+                f"Stock Availability: {self.stockAvailability}\n" \
+                f"Date: {self.date} | Time: {self.timeStamp}\n" \
+                f"Purchases: {self.purchases}\n" \
+                f"Offers: {self.offers}\n" \
+                f"Product Description: {self.productDescription}\n" \
+                f"Unique ID: {self.uniqueId}\n" \
+                f"Status: {self.status.name}"
 
     @staticmethod
     def __from_dict__(data):
@@ -61,6 +68,12 @@ class Listing:
         Static method that creates an instance of Listing from a dictionary.
         """
         # print(data)
+        
+        if data.get('Status') is not None:
+            status = Status[data.get('Status')]
+        else:
+            status = Status.DISCOVERABLE
+            
         return Listing(
             uniqueId=data.get('Unique ID'),
             date=data.get('Date'),
@@ -77,5 +90,6 @@ class Listing:
             comboOffers=data.get('Combo Offers'),
             stockAvailability=data.get('Stock Availibility'),
             imageUrls=data.get('Image Urls'),
-            purchases=data.get('Purchases')
+            purchases=data.get('Purchases'),
+            status=status
         )
