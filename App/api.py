@@ -62,6 +62,18 @@ def paginatedListings():
         return {
             "listings": returnList
         }
+
+@app.get('/listings/<uniqueId>')
+def getListingById(uniqueId):
+    try:
+        listing = listingAccess.getListing(uniqueId)
+        return listing.__dict__()
+        
+    except Exception as e:
+        print(e)
+        return {
+            "message": "Error fetching listing"
+        }, 402
         
 @app.post('/placeorder')
 def placeOrder():
