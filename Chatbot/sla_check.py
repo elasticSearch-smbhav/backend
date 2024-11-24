@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
-from Chatbot.delivery import get_orders_after_date, get_order
+from Chatbot.delivery import get_orders_after_date, get_order,get_all_orders
 from typing import List, Dict, Any
-
+import json
 # Define SLA Parameters (Assumed SLA: 48 hours from order date)
 SLA_HOURS = 48*7000
 
@@ -9,11 +9,16 @@ def parse_order_time(order: dict) -> datetime:
     """
     Function to safely parse the order's purchase date into a datetime object.
     """
-    purchase_date = order.get('PurchaseDate')
-  
+    purchase_date = order.get('purchaseDate')
+
+    if not purchase_date:
+        raise ValueError("PurchaseDate is missing in the order data")
     
-    if purchase_date and isinstance(purchase_date, str):
-        return datetime.strptime(purchase_date, "%Y-%m-%d %H:%M:%S")
+    if isinstance(purchase_date, str):
+        try:
+            return datetime.strptime(purchase_date, "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            raise ValueError(f"Invalid PurchaseDate format: {purchase_date}")
     elif isinstance(purchase_date, datetime):
         return purchase_date
     else:
@@ -98,6 +103,30 @@ def check_all_orders_sla() -> Dict[str, Any]:
             return {"status": "All orders are within SLA", "orders": []}
     except Exception as e:
         return {"status": "Error", "message": f"Error checking SLA for all orders: {str(e)}"}
+def get_orders_pending_sla_check():
+        """
+        Check which orders are pending SLA check based on their FulfillmentOrderStatus.
+        If status is 'Received', it is pending SLA check.
+        If status is 'Planning', it's passed the SLA check.
+        If status is 'Cancelled', it's cancelled.
+        """
+        pending_sla_orders = []
+        all_orders = get_all_orders()
+        print(type(all_orders))
+        print(all_orders['data'])
+        for order in all_orders['data']:
+            print("****************")
+            print(order)
+            print(type(order))
+            try:
+                order_dict = order
+                if order_dict.get('FulfillmentOrderStatus') == "Received":
+                    pending_sla_orders.append(order_dict)
+            except json.JSONDecodeError:
+                # Handle the case where the order string is not valid JSON
+                print(f"Invalid JSON: {order}")
+        
+        return pending_sla_orders
 
 # Test the functions here (Optional)
 if __name__ == "__main__":
@@ -119,3 +148,4 @@ if __name__ == "__main__":
     # Check SLA for all orders in the system
     # Uncomment this to test
     # print(check_all_orders_sla())
+

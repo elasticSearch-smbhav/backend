@@ -269,7 +269,7 @@ def get_chat_response():
 
     except Exception as e:
         print(f"Error: {str(e)}")
-        return jsonify({"message": "Error fetching order prices"}), 500
+        return jsonify({"message": "Error fetching response"}), 500
 
 
 def run():
