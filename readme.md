@@ -41,14 +41,14 @@ python3 main.py
 
 Create a .env file and add the following fields
 
-ACCESS_KEY= Access key for AWS account
-SECRET_KEY= Secret key for AWS account
-LISTINGS_ITEM_STATUS_CHANGE_QUEUE_URL = SQS Queue Url to publish listing items status change events
-LISTINGS_ITEM_MFN_QUANTITY_CHANGE_QUEUE_URL = SQS Queue Url to publish listing item status change url
-FULFILLMENT_ORDER_STATUS_QUEUE_URL = SQS Queue Url to publish order change events
-ORDER_QUEUE_URL = SQS Queue url to publish order placed events
-MONGO_URI = Mongo Uri Connection String
-MONGO_DB_NAME = Name for Mongo Database
-LISTING_COLLECTION_NAME = Mongo collection for listing data
-ORDER_COLLECTION_NAME = Mongo collection for order data
-TOGETHER_API_KEY = Together AI API  key for chatbot usage.
+1. ACCESS_KEY= Access key for AWS account
+2. SECRET_KEY= Secret key for AWS account
+3. LISTINGS_ITEM_STATUS_CHANGE_QUEUE_URL = SQS Queue Url to publish listing items status change events
+4. LISTINGS_ITEM_MFN_QUANTITY_CHANGE_QUEUE_URL = SQS Queue Url to publish listing item status change url
+5. FULFILLMENT_ORDER_STATUS_QUEUE_URL = SQS Queue Url to publish order change events
+6. ORDER_QUEUE_URL = SQS Queue url to publish order placed events
+7. MONGO_URI = Mongo Uri Connection String
+8. MONGO_DB_NAME = Name for Mongo Database
+9. LISTING_COLLECTION_NAME = Mongo collection for listing data
+10. ORDER_COLLECTION_NAME = Mongo collection for order data
+11. TOGETHER_API_KEY = Together AI API  key for chatbot usage.
