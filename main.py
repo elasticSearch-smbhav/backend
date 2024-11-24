@@ -27,6 +27,7 @@ def main():
     # # print(l.getListing("c91d6409f3862e68f6a4a71c3e0d6ec9").__dict__())
     # obj = generateWithOrderIdAndStatus("1234", FulfillmentOrderStatus.Cancelled)
     # publishFulfillmentOrderStatusNotification(obj)
+    # print(getForecastForId('af86b867929a073d9b6478adcb652d39'))
     run()
     
 if __name__ == "__main__":

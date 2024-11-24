@@ -10,6 +10,8 @@ from mocks.fulfillment_order_status import FulfillmentOrderStatus, generateWithO
 from flask import request
 import os
 from Chatbot.agent import SLAAgent
+from Prince.forecast import getForecast, getForecastForId
+
 app = Flask(__name__)
 listingAccess = ListingAccess()
 orderAccess = OrderAccess()
@@ -272,10 +274,29 @@ def get_chat_response():
         return jsonify({"message": "Error fetching response"}), 500
 
 
+@app.route('/forecast', methods=['POST'])
+def forecast():
+    try:
+        body = request.get_json()
+        
+        productId = body["Sku"]
+        
+        forecast = getForecastForId(productId)
+        
+        return {
+            "forecast": forecast
+        }
+        
+    except Exception as e:
+        print(e)
+        return {
+            "message": "Error fetching forecast"
+        }, 402
+
 def run():
     load_dotenv()
     CORS(app)
-    app.run(port=8080, debug=True)
+    app.run(port=8080,host="0.0.0.0", debug=True)
 
 #order place api
 #listing by seller
