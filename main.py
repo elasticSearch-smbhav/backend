@@ -4,7 +4,6 @@ from mocks.listing_items_status_change import generateRandomListingItemsStatusCh
 from mocks.order import generateRandomOrder, publishOrderToQueue
 from Mongo.order_access import OrderAccess
 from Mongo.listing_access import ListingAccess
-from AWS.kafka import createKafkaTopic
 from App.api import run
 def main():
     # listingItemsMfnQuantityChangeObj = listingItemsMfnQuantityChange("sellerId", FulfillmentChannelCode.MFN, "c91d6409f3862e68f6a4a71c3e0d6ec9", 25)
