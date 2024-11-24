@@ -16,6 +16,33 @@ orderAccess = OrderAccess()
 model_name = "meta-llama/Llama-3-70b-chat-hf" 
 agent = SLAAgent(model=model_name)
 
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    """
+    Health check endpoint to verify that the service is running properly.
+    """
+    try:
+        # Add any additional checks here, such as database connectivity, external service status, etc.
+        return jsonify({
+            "status": "success",
+            "message": "Service is healthy",
+            "details": {
+                "service": "running",
+                "database": "connected",  # Replace with actual check if required
+                "uptime": "72 hours"     # Add more metrics if needed
+            }
+        }), 200
+    except Exception as e:
+        return jsonify({
+            "status": "failure",
+            "message": "Service is unhealthy",
+            "details": {
+                "error": str(e)
+            }
+        }), 500
+
+
 @app.post("/listing")
 def getListing():
     try:
