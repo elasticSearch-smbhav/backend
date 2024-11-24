@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask,jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 from Mongo.listing_access import ListingAccess
@@ -9,10 +9,12 @@ from mocks.listing_items_mfn_quantity_change import listingItemsMfnQuantityChang
 from mocks.fulfillment_order_status import FulfillmentOrderStatus, generateWithOrderIdAndStatus, publishFulfillmentOrderStatusNotification
 from flask import request
 import os
-
+from Chatbot.agent import SLAAgent
 app = Flask(__name__)
 listingAccess = ListingAccess()
 orderAccess = OrderAccess()
+model_name = "meta-llama/Llama-3-70b-chat-hf" 
+agent = SLAAgent(model=model_name)
 
 @app.post("/listing")
 def getListing():
@@ -225,6 +227,23 @@ def publishOrderStatusChangeEvent():
             "message": "Error publishing event"
         }, 402
         
+
+
+@app.route('/getChatResponse', methods=['POST'])
+def get_chat_response():
+    try:
+        # Parse JSON body from the request
+        body = request.get_json()
+        if not body or "prompt" not in body:
+            return jsonify({"message": "Invalid request: 'prompt' is required"}), 400
+        prompt = body["prompt"]
+        response = agent.ask_question(prompt)
+        return jsonify(response)
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return jsonify({"message": "Error fetching order prices"}), 500
+
 
 def run():
     load_dotenv()
